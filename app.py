@@ -1,4 +1,4 @@
-from flask import Flask, request, abort, jsonify
+from flask import Flask, request, abort, jsonify, render_template
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import SQLAlchemyError
@@ -22,6 +22,8 @@ app = create_app()
 @app.route('/students', methods=['GET'])
 def index() -> jsonify:
     students = Student.query.all()
+    students_f = [student.format() for student in students]
+    return render_template('pages/students.html', students=students_f)
 
     return jsonify({
         'success': True,

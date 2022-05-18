@@ -31,9 +31,9 @@ class FyyurSession():
     def close(self) -> None:
         db.session.close()
 
-student_interests = Table('student_interests', Base.metadata,
-    Column('student_id', Integer, ForeignKey('interests.id')),
-    Column('interest_id', Integer, ForeignKey('interests.id'))
+student_interests = db.Table('student_interests', db.Base.metadata,
+    db.Column('student_id', db.Integer(), db.ForeignKey('interests.id')),
+    db.Column('interest_id', db.Integer(), db.ForeignKey('interests.id'))
 )
 
 class Interest(db.Model, FyyurSession):
@@ -52,7 +52,7 @@ class Student(db.Model, FyyurSession):
     id = db.Column(db.Integer(), primary_key=True)
     name = db.Column(db.String(), unique=True, nullable=False)
 
-    interests = relationship("Interest",
+    interests = db.relationship("Interest",
                     secondary=student_interests,   # you can also use the string name of the table, "maps", as the secondary
                     backref="students")
 

@@ -1,8 +1,9 @@
 from flask import Flask, request, abort, jsonify
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.exc import SQLAlchemyError
 import model
-from model import db, migrate, config, Person
+from model import db, migrate, config, Student
 
 
 def create_app() -> Flask:
@@ -16,38 +17,50 @@ def create_app() -> Flask:
 
 app = create_app()
 
+# SELECT * FROM student;
 
-@app.route('/persons', methods=['GET'])
+@app.route('/students', methods=['GET'])
 def index() -> jsonify:
-    persons = Person.query.all()
+    students = Student.query.all()
 
     return jsonify({
         'success': True,
-        'persons': [person.format() for person in persons]
+        'persons': [student.format() for student in students]
     })
 
+# START TRANSACTION;
+# INSERT INTO students(name) VALUES('VALUE');
+# INSERT INTO student_interests(student_id,interest_id) VALUES('1','1');
+# COMMIT;
 
-@app.route('/persons', methods=['POST'])
+# START TRANSACTION;
+# DELETE FROM student;
+# SELECT * FROM student;
+# ROLLBACK;
+
+# SELECT * FROM student;
+
+@app.route('/students', methods=['POST'])
 def create() -> jsonify:
     body = request.get_json()
     if body is not None:
         name = body.get('name', None)
         if name is not None:
-            person = Person(name=name)
+            student = Student(name=name)
             success = False
             try:
-                person.insert()
-                person.save()
-                person.refresh()
+                student.add()
+                student.commit()
+                student.refresh()
                 success = True
-            except BaseException:
-                person.rollback()
+            except SQLAlchemyError:
+                student.rollback()
             finally:
-                person.dispose()
+                student.dispose()
                 if success:
                     return jsonify({
                         'success': True,
-                        'created': person.id
+                        'created': student.id
                     })
                 else:
                     abort(500)
@@ -55,6 +68,9 @@ def create() -> jsonify:
             abort(400)
     else:
         abort(400)
+
+
+
 
 
 @app.errorhandler(400)

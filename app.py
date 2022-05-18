@@ -1,9 +1,10 @@
-from flask import Flask, request, abort, jsonify, render_template
+from flask import Flask, request, abort, jsonify, render_template, redirect, url_for
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import SQLAlchemyError
 import model
-from model import db, migrate, config, Student
+from model import Interest, db, migrate, config, Student
+from forms import StudentForm, InterestForm
 
 
 def create_app() -> Flask:
@@ -17,18 +18,37 @@ def create_app() -> Flask:
 
 app = create_app()
 
-# SELECT * FROM student;
+# list
+# SELECT * FROM student LIMIT 5 OFFSET 0 ORDER BY id DESC;
+
 
 @app.route('/students', methods=['GET'])
-def index() -> jsonify:
-    students = Student.query.all()
+def index(limit=5, offset=0):
+    students = Student.query.order_by(
+        Student.id.desc()).limit(limit).offset(offset).all()
     students_f = [student.format() for student in students]
-    return render_template('pages/students.html', students=students_f)
+    return render_template('pages/students/list.html', students=students_f)
 
-    return jsonify({
-        'success': True,
-        'persons': [student.format() for student in students]
-    })
+
+@app.route('/interests', methods=['GET'])
+def index(limit=5, offset=0):
+    interests = Interest.query.order_by(
+        Interest.id.desc()).limit(limit).offset(offset).all()
+    interests_f = [interest.format() for interest in interests]
+    return render_template('pages/interests/list.html', students=interests_f)
+
+# create
+
+
+@app.route('/student/create', methods=['GET'])
+def create_student():
+    student_form = StudentForm()
+    return render_template('forms/students/add.html')
+
+
+@app.route('/student/create', methods=['GET'])
+def create_interest():
+    return render_template('forms/interests/add.html')
 
 # START TRANSACTION;
 # INSERT INTO students(name) VALUES('VALUE');
@@ -42,13 +62,15 @@ def index() -> jsonify:
 
 # SELECT * FROM student;
 
-@app.route('/students', methods=['POST'])
-def create() -> jsonify:
-    body = request.get_json()
-    if body is not None:
-        name = body.get('name', None)
+
+@app.route('/students/create', methods=['POST'])
+def create_student():
+    if len(request.form) > 0:
+        name = request.form.get('name', None)
+        interests = request.form.get('interests', None)
         if name is not None:
-            student = Student(name=name)
+            student = Student(name=name, interests=[Interest.query.filter(
+                Interest.id == interest) for interest in interests])
             success = False
             try:
                 student.add()
@@ -60,10 +82,7 @@ def create() -> jsonify:
             finally:
                 student.dispose()
                 if success:
-                    return jsonify({
-                        'success': True,
-                        'created': student.id
-                    })
+                    return redirect(url_for('students'))
                 else:
                     abort(500)
         else:
@@ -72,25 +91,30 @@ def create() -> jsonify:
         abort(400)
 
 
-
-
-
-@app.errorhandler(400)
-def error_400(error):
-    return jsonify({
-        'success': False,
-        'error': error.code,
-        'message': error.name
-    })
-
-
-@app.errorhandler(500)
-def error_500(error):
-    return jsonify({
-        'success': False,
-        'error': error.code,
-        'message': error.name
-    })
+@app.route('/interests/create', methods=['POST'])
+def create_interest():
+    if len(request.form) > 0:
+        name = request.form.get('name', None)
+        if name is not None:
+            interest = Interest(name=name)
+            success = False
+            try:
+                interest.add()
+                interest.commit()
+                interest.refresh()
+                success = True
+            except SQLAlchemyError:
+                interest.rollback()
+            finally:
+                interest.dispose()
+                if success:
+                    return redirect(url_for('interests'))
+                else:
+                    abort(500)
+        else:
+            abort(400)
+    else:
+        abort(400)
 
 
 if __name__ == '__main__':

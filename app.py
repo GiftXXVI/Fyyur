@@ -46,7 +46,7 @@ def create_student_form():
     return render_template('forms/students/add.html')
 
 
-@app.route('/student/create', methods=['GET'])
+@app.route('/interest/create', methods=['GET'])
 def create_interest_form():
     return render_template('forms/interests/add.html')
 

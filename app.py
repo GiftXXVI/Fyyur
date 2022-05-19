@@ -23,7 +23,7 @@ app = create_app()
 
 
 @app.route('/students', methods=['GET'])
-def index(limit=5, offset=0):
+def view_students(limit=5, offset=0):
     students = Student.query.order_by(
         Student.id.desc()).limit(limit).offset(offset).all()
     students_f = [student.format() for student in students]
@@ -31,7 +31,7 @@ def index(limit=5, offset=0):
 
 
 @app.route('/interests', methods=['GET'])
-def index(limit=5, offset=0):
+def view_interests(limit=5, offset=0):
     interests = Interest.query.order_by(
         Interest.id.desc()).limit(limit).offset(offset).all()
     interests_f = [interest.format() for interest in interests]
@@ -41,13 +41,13 @@ def index(limit=5, offset=0):
 
 
 @app.route('/student/create', methods=['GET'])
-def create_student():
+def create_student_form():
     student_form = StudentForm()
     return render_template('forms/students/add.html')
 
 
 @app.route('/student/create', methods=['GET'])
-def create_interest():
+def create_interest_form():
     return render_template('forms/interests/add.html')
 
 # START TRANSACTION;

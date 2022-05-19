@@ -31,7 +31,7 @@ class FyyurSession():
     def close(self) -> None:
         db.session.close()
 
-student_interests = db.Table('student_interests', db.Base.metadata,
+student_interests = db.Table('student_interests', db.Model.metadata,
     db.Column('student_id', db.Integer(), db.ForeignKey('interests.id')),
     db.Column('interest_id', db.Integer(), db.ForeignKey('interests.id'))
 )

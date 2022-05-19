@@ -1,10 +1,13 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, FieldList, IntegerField
+from wtforms import StringField, FieldList, IntegerField, SelectMultipleField
 from wtforms.validators import DataRequired
 
 class StudentForm(FlaskForm):
     name = StringField("Name", validators=[DataRequired()])
-    interests = FieldList(IntegerField('Interest'), min_entries=1, max_entries=5)
+    interests = SelectMultipleField(
+        'interests', validators=[DataRequired()],
+        choices=[]
+    )
 
 class InterestForm(FlaskForm):
     name = StringField("Name", validators=[DataRequired()])

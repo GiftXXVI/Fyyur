@@ -1,12 +1,22 @@
 {% extends 'layouts/form.html' %} {% block title %}New Student{% endblock %} {%
 block content %}
+<h3 class="form-heading">Student</h3>
 <div class="form-wrapper">
-  <form method="post" class="form">
+  <form method="post" class="form form-inline">
     {{ form.csrf_token() }}
-    <h3 class="form-heading">New Student</h3>
-    <div class="form-group">
-      <label for="name">Name</label>
-      {{ form.name(class_ = 'form-control', autofocus = true) }}
+    <div class="mb-3">
+      <div class="form-group">
+        <label class="form-label" for="name">Name</label>
+        {{ form.name(class_ = 'form-control', autofocus = true) }}
+      </div>
+    </div>
+    <div class="mb-3">
+      <div class="form-group">
+        <label class="form-label" for="genres">Interests</label>
+        <small>Ctrl+Click to select multiple</small>
+        {{ form.interests(class_ = 'form-control', placeholder='Interests,
+        separated by commas', autofocus = true, multiple='multiple') }}
+      </div>
     </div>
     <div class="form-group">
       <input

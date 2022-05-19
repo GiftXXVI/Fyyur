@@ -1,13 +1,15 @@
 {% extends 'layouts/form.html' %} {% block title %}New Interest{% endblock %} {%
 block content %}
+<h3 class="form-heading">Interest</h3>
 <div class="form-wrapper">
-  <form method="post" class="form">
+  <form method="post" class="form form-inline">
     {{ form.csrf_token() }}
-    <h3 class="form-heading">New Interest</h3>
-    <div class="form-group">
-      <div class="form-inline">
-        <label for="name">Name</label>
-        {{ form.name(class_ = 'form-control', autofocus = true) }}
+    <div class="mb-3">
+      <div class="form-group">
+        <div class="form-inline">
+          <label class="form-label" for="name">Name</label>
+          {{ form.name(class_ = 'form-control', autofocus = true) }}
+        </div>
       </div>
     </div>
     <div class="form-group">

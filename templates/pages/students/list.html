@@ -1,18 +1,19 @@
-{% extends 'layouts/page.html' %}
-{% block title %}Students{% endblock %} 
-{% block content %}
+{% extends 'layouts/page.html' %} {% block title %}Students{% endblock %} {%
+block content %}
 <div class="row">
   <div class="col-sm-6">
     <h3>First 10 students</h3>
-    {% for student in students %}
-    <li>
-      <a href="/students/{{ student.id }}">
-        <div class="item">
-          <h5>{{ student.name }}</h5>
-        </div>
-      </a>
-    </li>
-    {% endfor %}
+    <ul>
+      {% for student in students %}
+      <li>
+        <a href="/students/{{ student.id }}">
+          <div class="item">
+            <h5>{{ student.name }}</h5>
+          </div>
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
   </div>
 </div>
 {% endblock %}

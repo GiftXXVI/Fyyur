@@ -36,7 +36,7 @@ def view_interests(limit=5, offset=0):
     interests = Interest.query.order_by(
         Interest.id.desc()).limit(limit).offset(offset).all()
     interests_f = [interest.format() for interest in interests]
-    return render_template('pages/interests/list.html', students=interests_f)
+    return render_template('pages/interests/list.html', interests=interests_f)
 
 # create
 

@@ -11,6 +11,7 @@ def create_app() -> Flask:
     app = Flask(__name__)
     app.config["SQLALCHEMY_DATABASE_URI"] = config["SQLALCHEMY_DATABASE_URI"]
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = config["SQLALCHEMY_TRACK_MODIFICATIONS"]
+    app.config['SECRET_KEY'] = config['SECRET_KEY']
     db.init_app(app)
     migrate = Migrate(app, db)
     return app
@@ -27,7 +28,7 @@ def view_students(limit=5, offset=0):
     students = Student.query.order_by(
         Student.id.desc()).limit(limit).offset(offset).all()
     students_f = [student.format() for student in students]
-    return render_template('pages_students_list.html', students=students_f)
+    return render_template('pages/students/list.html', students=students_f)
 
 
 @app.route('/interests', methods=['GET'])
@@ -35,20 +36,21 @@ def view_interests(limit=5, offset=0):
     interests = Interest.query.order_by(
         Interest.id.desc()).limit(limit).offset(offset).all()
     interests_f = [interest.format() for interest in interests]
-    return render_template('pages_interests_list.html', students=interests_f)
+    return render_template('pages/interests/list.html', students=interests_f)
 
 # create
 
 
-@app.route('/student/create', methods=['GET'])
+@app.route('/students/create', methods=['GET'])
 def create_student_form():
     student_form = StudentForm()
-    return render_template('templates/forms/students/add.html')
+    return render_template('forms/students/add.html', form = student_form)
 
 
-@app.route('/interest/create', methods=['GET'])
+@app.route('/interests/create', methods=['GET'])
 def create_interest_form():
-    return render_template('templates/forms/interests/add.html')
+    interest_form = InterestForm()
+    return render_template('forms/interests/add.html', form = interest_form)
 
 # START TRANSACTION;
 # INSERT INTO students(name) VALUES('VALUE');
@@ -69,8 +71,7 @@ def create_student():
         name = request.form.get('name', None)
         interests = request.form.get('interests', None)
         if name is not None:
-            student = Student(name=name, interests=[Interest.query.filter(
-                Interest.id == interest) for interest in interests])
+            student = Student(name=name)
             success = False
             try:
                 student.add()
@@ -80,9 +81,9 @@ def create_student():
             except SQLAlchemyError:
                 student.rollback()
             finally:
-                student.dispose()
+                student.close()
                 if success:
-                    return redirect(url_for('students'))
+                    return redirect(url_for('view_students'))
                 else:
                     abort(500)
         else:
@@ -106,9 +107,9 @@ def create_interest():
             except SQLAlchemyError:
                 interest.rollback()
             finally:
-                interest.dispose()
+                interest.close()
                 if success:
-                    return redirect(url_for('interests'))
+                    return redirect(url_for('view_interests'))
                 else:
                     abort(500)
         else:

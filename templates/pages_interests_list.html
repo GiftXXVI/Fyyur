@@ -1,0 +1,16 @@
+{% block title %}Interests{% endblock %} {% block content %}
+<div class="row">
+  <div class="col-sm-6">
+    <h3>First 10 interests</h3>
+    {% for interest in interests %}
+    <li>
+      <a href="/interest/{{ interest.id }}">
+        <div class="item">
+          <h5>{{ interest.name }}</h5>
+        </div>
+      </a>
+    </li>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

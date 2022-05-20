@@ -1,6 +1,4 @@
 from flask import Flask, request, abort, jsonify, render_template, redirect, url_for
-from flask_migrate import Migrate
-from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import SQLAlchemyError
 import model
 from model import Interest, db, migrate, config, Student
@@ -125,6 +123,23 @@ def create_interest():
     else:
         abort(400)
 
+@app.route('/interests/edit/<int:interest_id>', methods=['POST'])
+def update_interest(interest_id):
+    if len(request.form) > 0:
+        name = request.form.get('name', None)
+        if name is not None:
+            interest = Interest.query.filter(Interest.id==interest_id).one_or_none()
+            success = False
+            try:
+                interest.name = name
+                interest.commit()
+                success = True
+            except SQLAlchemyError:
+                interest.rollback()
+            finally:
+                interest.close()
+                if success:
+                    return redirect(url_for('view_interests'))
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True)

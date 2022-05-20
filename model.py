@@ -36,6 +36,8 @@ student_interests = db.Table('student_interests', db.Model.metadata,
     db.Column('interest_id', db.Integer(), db.ForeignKey('interests.id'))
 )
 
+# CREATE TABLE interests(id INT PRIMARY KEY, name VARCHAR(60) UNIQUE NOT NULL)
+
 class Interest(db.Model, FyyurSession):
     __tablename__ = 'interests'
     id = db.Column(db.Integer(), primary_key=True)

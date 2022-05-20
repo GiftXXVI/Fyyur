@@ -1,5 +1,6 @@
 from flask import Flask, request, abort, jsonify, render_template, redirect, url_for
 from sqlalchemy.exc import SQLAlchemyError
+from flask_migrate import Migrate
 import model
 from model import Interest, db, migrate, config, Student
 from forms import StudentForm, InterestForm
@@ -140,6 +141,12 @@ def update_interest(interest_id):
                 interest.close()
                 if success:
                     return redirect(url_for('view_interests'))
+                else:
+                    abort(500)
+        else:
+            abort(500)
+    else:
+        abort(500)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True)

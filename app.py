@@ -45,14 +45,14 @@ def view_interests(limit=5, offset=0):
 def create_student_form():
     student_form = StudentForm()
     interests = Interest.query.order_by(Interest.id.desc()).all()
-    student_form.interests.choices = [(i.id,i.name) for i in interests]
-    return render_template('forms/students/add.html', form = student_form)
+    student_form.interests.choices = [(i.id, i.name) for i in interests]
+    return render_template('forms/students/add.html', form=student_form)
 
 
 @app.route('/interests/create', methods=['GET'])
 def create_interest_form():
     interest_form = InterestForm()
-    return render_template('forms/interests/add.html', form = interest_form)
+    return render_template('forms/interests/add.html', form=interest_form)
 
 # START TRANSACTION;
 # INSERT INTO students(name) VALUES('VALUE');
@@ -72,7 +72,7 @@ def create_student():
     if len(request.form) > 0:
         name = request.form.get('name', None)
         interests = request.form.getlist('interests', None)
-        #print(interests)
+        # print(interests)
         if name is not None:
             student = Student(name=name)
             success = False
@@ -80,7 +80,8 @@ def create_student():
                 student.add()
                 for i in interests:
                     print(i)
-                    interest = Interest.query.filter(Interest.id==i).one_or_none()
+                    interest = Interest.query.filter(
+                        Interest.id == i).one_or_none()
                     student.interests.append(interest)
                 student.commit()
                 student.refresh()

@@ -31,10 +31,12 @@ class FyyurSession():
     def close(self) -> None:
         db.session.close()
 
-student_interests = db.Table('student_interests', db.Model.metadata,
-    db.Column('student_id', db.Integer(), db.ForeignKey('students.id')),
-    db.Column('interest_id', db.Integer(), db.ForeignKey('interests.id'))
-)
+
+student_interests = db.Table(
+    'student_interests', db.Model.metadata, db.Column(
+        'student_id', db.Integer(), db.ForeignKey('students.id')), db.Column(
+            'interest_id', db.Integer(), db.ForeignKey('interests.id')))
+
 
 # CREATE TABLE interests(id INT PRIMARY KEY, name VARCHAR(60) UNIQUE NOT NULL)
 
@@ -49,18 +51,20 @@ class Interest(db.Model, FyyurSession):
     def __repr__(self) -> str:
         return f'{self.id} - {self.name}'
 
+
 class Student(db.Model, FyyurSession):
     __tablename__ = 'students'
     id = db.Column(db.Integer(), primary_key=True)
     name = db.Column(db.String(), unique=True, nullable=False)
 
     interests = db.relationship("Interest",
-                    secondary=student_interests,   # you can also use the string name of the table, "maps", as the secondary
-                    backref="students")
+                                secondary=student_interests,
+                                # you can also use the string name of the
+                                # table, "maps", as the secondary
+                                backref="students")
 
     def format(self) -> dict:
         return {'id': self.id, 'name': self.name}
 
     def __repr__(self) -> str:
         return f'{self.id} - {self.name}'
-

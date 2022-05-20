@@ -38,7 +38,7 @@ student_interests = db.Table(
             'interest_id', db.Integer(), db.ForeignKey('interests.id')))
 
 
-# CREATE TABLE interests(id INT PRIMARY KEY, name VARCHAR(60) UNIQUE NOT NULL)
+# CREATE TABLE interests(id INTEGER PRIMARY KEY, name VARCHAR(60) UNIQUE NOT NULL)
 
 class Interest(db.Model, FyyurSession):
     __tablename__ = 'interests'

@@ -148,5 +148,26 @@ def update_interest(interest_id):
     else:
         abort(500)
 
+@app.route('/interests/delete/<int:interest_id>', methods=['POST'])
+def delete_interest(interest_id):
+    if len(request.form) > 0:
+        interest = Interest.query.filter(Interest.id==interest_id).one_or_none()
+        success = False
+        try:
+            interest.delete()
+            interest.commit()
+            success = True
+        except SQLAlchemyError:
+            interest.rollback()
+        finally:
+            interest.close()
+        if success:
+            return redirect(url_for('view_interests'))
+        else:
+            abort(500)
+    else:
+        abort(400)
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True)

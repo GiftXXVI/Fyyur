@@ -56,3 +56,45 @@ Collecting zipp==3.8.0
 Installing collected packages: MarkupSafe, Mako, zipp, importlib-metadata, importlib-resources, greenlet, SQLAlchemy, alembic, pycodestyle, toml, autopep8, click, itsdangerous, Werkzeug, Jinja2, Flask, Flask-SQLAlchemy, Flask-Migrate, WTForms, Flask-WTF, psycopg2-binary
 Successfully installed Flask-2.1.1 Flask-Migrate-3.1.0 Flask-SQLAlchemy-2.5.1 Flask-WTF-1.0.1 Jinja2-3.1.1 Mako-1.2.0 MarkupSafe-2.1.1 SQLAlchemy-1.4.35 WTForms-3.0.1 Werkzeug-2.1.1 alembic-1.7.7 autopep8-1.6.0 click-8.1.2 greenlet-1.1.2 importlib-metadata-4.11.3 importlib-resources-5.7.1 itsdangerous-2.1.2 psycopg2-binary-2.9.3 pycodestyle-2.8.0 toml-0.10.2 zipp-3.8.0
 ```
+6. Create the database:
+```bash
+sudo -u postgres createdb Fyyur
+```
+7. Setup Environment Variables.
+Before running this, make sure you have set a DB_PASSWORD and DB_NAME that match your environment's configuration.
+```bash
+. env.sh
+```
+8. Apply Migrations:
+```bash
+flask db upgrade
+```
+sample output:
+```bash
+INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.
+INFO  [alembic.runtime.migration] Will assume transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade  -> b34cd64a336c, Initialize
+INFO  [alembic.runtime.migration] Running upgrade b34cd64a336c -> 79a51000a838, Created Student Interests
+INFO  [alembic.runtime.migration] Running upgrade 79a51000a838 -> f024e6520c3a, Corrected Foreign Key
+```
+9. Run the App to Test the installation.
+```bash
+flask run
+```
+sample output
+```bash
+ * Serving Flask app 'app' (lazy loading)
+ * Environment: development
+ * Debug mode: on
+ * Running on http://127.0.0.1:5000 (Press CTRL+C to quit)
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 349-051-236
+```
+10. Try to view the route `/students`:
+```
+http://127.0.0.1:5000/students
+```
+sample output:
+![Students](https://drive.google.com/file/d/15UnhrJN-AdFjIesCKbQ5kaQuDWWNLuiP/view?usp=sharing)
+

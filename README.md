@@ -96,8 +96,6 @@ sample output
 http://127.0.0.1:5000/students
 ```
 sample output:
-![Open Interest List](https://drive.google.com/uc?export=view&id=1FniPI0MwIzT34Rv-URRd0aZXiupFjBP8)
-![Create Interest](https://drive.google.com/uc?export=view&id=15UnhrJN-AdFjIesCKbQ5kaQuDWWNLuiP)
 ![Open Students](https://drive.google.com/uc?export=view&id=1eL7j9-HNTUfLB2RBSjQRsHpvwmOEcdPG)
 ![Create Student](https://drive.google.com/uc?export=view&id=1S-zSerivPWnAdJu6yUOUDNXRnx3tmbER)
 

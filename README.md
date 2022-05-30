@@ -96,5 +96,6 @@ sample output
 http://127.0.0.1:5000/students
 ```
 sample output:
-![Students](https://drive.google.com/file/d/15UnhrJN-AdFjIesCKbQ5kaQuDWWNLuiP/view?usp=sharing)
+<img src="https://drive.google.com/file/d/15UnhrJN-AdFjIesCKbQ5kaQuDWWNLuiP/view?usp=sharing"
+     alt="Students" />
 

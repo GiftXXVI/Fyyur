@@ -91,9 +91,12 @@ sample output
  * Debugger is active!
  * Debugger PIN: 349-051-236
 ```
-10. Try to view the route `/students`:
+10. Try to view and update using the following routes:
 ```
+http://127.0.0.1:5000/interest
 http://127.0.0.1:5000/students
+http://127.0.0.1:5000/students/create
+http://127.0.0.1:5000/interests/create
 ```
 sample output:
 ![Open Students](demo-images/Open_Create_Students.PNG)

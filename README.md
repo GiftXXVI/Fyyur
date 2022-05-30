@@ -96,6 +96,6 @@ sample output
 http://127.0.0.1:5000/students
 ```
 sample output:
-![Open Students](https://drive.google.com/uc?export=view&id=1eL7j9-HNTUfLB2RBSjQRsHpvwmOEcdPG)
-![Create Student](https://drive.google.com/uc?export=view&id=1S-zSerivPWnAdJu6yUOUDNXRnx3tmbER)
+![Open Students](demo-images/Open_Create_Students.PNG)
+![Create Student](demo-images/Open_Students.PNG)
 

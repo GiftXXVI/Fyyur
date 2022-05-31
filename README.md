@@ -93,7 +93,7 @@ sample output
 ```
 10. Try to view and update using the following routes:
 
-http://127.0.0.1:5000/interest  
+http://127.0.0.1:5000/interests  
 
 http://127.0.0.1:5000/students  
 
